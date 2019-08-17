@@ -17,9 +17,9 @@ public class StatusBarHeight extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, CordovaArgs args, CallbackContext callbackContext) throws JSONException {
-        final Activity activity = this.cordova.getActivity();
-
         Log.v(LOG_TAG, MESSAGE_EXEC + action);
+
+        final Activity activity = cordova.getActivity();
 
         if (action.equals("value")) {
             float height = 0;
