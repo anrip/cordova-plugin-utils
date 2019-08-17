@@ -12,17 +12,24 @@ import android.util.Log;
 
 public class StatusBarHeight extends CordovaPlugin {
 
+    private static final String LOG_TAG = "StatusBarHeight";
+    private static final String MESSAGE_EXEC = "Cordova Android Execute StatusBarHeight.";
+
     @Override
     public boolean execute(String action, CordovaArgs args, CallbackContext callbackContext) throws JSONException {
         final Activity activity = this.cordova.getActivity();
 
-        if (action.equals("height")) {
+        Log.v(LOG_TAG, MESSAGE_EXEC + action);
+
+        if (action.equals("value")) {
             float height = 0;
+
             int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
             if (resourceId > 0) {
                 float scaleRatio = activity.getResources().getDisplayMetrics().density;
                 height = activity.getResources().getDimension(resourceId) / scaleRatio;
             }
+
             callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, height));
             return true;
         }
