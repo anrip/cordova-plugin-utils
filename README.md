@@ -1,12 +1,12 @@
-# cordova-plugin-statusbar-height
+# cordova-plugin-utils
 
-Get the statusbar height for cordova-android
+Cordova Extra Utils
 
 ## Installation
 
 This installation method requires cordova 5.0+
 
-    cordova plugin add cordova-plugin-statusbar-height
+    cordova plugin add cordova-plugin-utils
 
 # StatusBarHeight
 

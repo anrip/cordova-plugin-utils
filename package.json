@@ -1,38 +1,38 @@
 {
-    "name": "cordova-plugin-statusbar-height",
+    "name": "cordova-plugin-utils",
     "version": "1.1.0",
     "author": {
         "name": "Anrip Wong",
         "email": "mail@anrip.com",
         "url": "http://www.anrip.com/"
     },
-    "homepage": "https://github.com/anrip/cordova-plugin-statusbar-height",
-    "description": "Cordova StatusBar Height Plugin",
+    "description": "Cordova Extra Utils",
     "license": "Apache License Version 2.0",
+    "homepage": "https://github.com/anrip/cordova-plugin-utils",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/anrip/cordova-plugin-statusbar-height.git"
+        "url": "git+https://github.com/anrip/cordova-plugin-utils.git"
     },
     "bugs": {
-        "url": "https://github.com/anrip/cordova-plugin-statusbar-height/issues"
+        "url": "https://github.com/anrip/cordova-plugin-utils/issues"
     },
     "keywords": [
         "cordova",
-        "statusbar",
-        "height",
+        "plugin",
+        "utils",
         "android",
-        "cordova-android"
+        "ios",
+        "statusbar",
+        "height"
     ],
-    "cordova": {
-        "id": "cordova-plugin-statusbar-height",
-        "platforms": [
-            "android"
-        ]
+    "engines": {
+        "cordova": ">=5.0.0"
     },
-    "engines": [
-        {
-            "name": "cordova",
-            "version": ">=5.0.0"
-        }
-    ]
+    "cordova": {
+        "id": "cordova-plugin-utils",
+        "platforms": [
+            "android",
+            "ios"
+        ]
+    }
 }
