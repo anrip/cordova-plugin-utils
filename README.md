@@ -12,7 +12,7 @@ This installation method requires cordova 5.0+
 
 Call this function to get the height of the statusbar.
 
-    StatusBarHeight(onSuccess, onError);
+    cdvUtils.getStatusBarHeight(onSuccess, onError);
 
     const onSuccess = (height) => {
         // do something with the statusbar height here
