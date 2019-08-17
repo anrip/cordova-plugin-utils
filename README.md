@@ -8,8 +8,7 @@ This installation method requires cordova 5.0+
 
     cordova plugin add cordova-plugin-statusbar-height
 
-StatusBarHeight
-=================
+# StatusBarHeight
 
 Call this function to get the height of the statusbar.
 
@@ -23,7 +22,6 @@ Call this function to get the height of the statusbar.
         // handle error state; should usually not ever activate
     }
 
-Supported Platforms
--------------------
+## Supported Platforms
 
-- Android
+-   Android
