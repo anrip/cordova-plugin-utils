@@ -7,7 +7,7 @@
         "url": "http://www.anrip.com/"
     },
     "homepage": "https://github.com/anrip/cordova-plugin-statusbar-height",
-    "description": "get statusbar height for cordova-android",
+    "description": "Cordova StatusBar Height Plugin",
     "license": "Apache License Version 2.0",
     "repository": {
         "type": "git",
