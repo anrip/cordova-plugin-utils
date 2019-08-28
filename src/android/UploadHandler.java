@@ -10,23 +10,17 @@ import java.io.File;
 
 class UploadHandler {
 
-    // 文件 platforms/android/CordovaLib/src/org/apache/cordova/engine/SystemWebChromeClient.java
-    // 替换 fileChooserParams.createIntent() 为 UploadHandler.createIntent(fileChooserParams)
-
     public static Intent createIntent(WebChromeClient.FileChooserParams params) {
         String[] acceptTypes = params.getAcceptTypes();
 
-        String mimeType = acceptTypes[0];
-
-        if (mimeType.length() == 0) {
-            mimeType = "*/*";
+        String acceptType = acceptTypes[0];
+        if (acceptType.length() > 0) {
+            acceptType = acceptType.split("/")[0];
         }
 
-        String capture = "filesystem";
-
         // Specified 'image/*'
-        if (mimeType.equals("image/*")) {
-            if (capture.equals("camera")) {
+        if (acceptType.equals("image")) {
+            if (params.isCaptureEnabled()) {
                 return createCameraIntent();
             }
             Intent chooser = createChooserIntent(createCameraIntent());
@@ -35,8 +29,8 @@ class UploadHandler {
         }
 
         // Specified 'video/*'
-        if (mimeType.equals("video/*")) {
-            if (capture.equals("camcorder")) {
+        if (acceptType.equals("video")) {
+            if (params.isCaptureEnabled()) {
                 return createCamcorderIntent();
             }
             Intent chooser = createChooserIntent(createCamcorderIntent());
@@ -45,8 +39,8 @@ class UploadHandler {
         }
 
         // Specified 'audio/*'
-        if (mimeType.equals("audio/*")) {
-            if (capture.equals("microphone")) {
+        if (acceptType.equals("audio")) {
+            if (params.isCaptureEnabled()) {
                 return createSoundRecorderIntent();
             }
             Intent chooser = createChooserIntent(createSoundRecorderIntent());
@@ -56,7 +50,7 @@ class UploadHandler {
 
         // No special, trigger the default file upload chooser.
         Intent chooser = createChooserIntent(createCameraIntent(), createCamcorderIntent(), createSoundRecorderIntent());
-        chooser.putExtra(Intent.EXTRA_INTENT, createOpenableIntent("*/*"));
+        chooser.putExtra(Intent.EXTRA_INTENT, params.createIntent());
         return chooser;
     }
 
@@ -67,10 +61,10 @@ class UploadHandler {
     }
 
     private static Intent createOpenableIntent(String type) {
-        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-        i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType(type);
-        return i;
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(type);
+        return intent;
     }
 
     private static Intent createCameraIntent() {
@@ -78,11 +72,11 @@ class UploadHandler {
         File cameraDataDir = new File(externalDataDir.getAbsolutePath() + "/app-photos");
         cameraDataDir.mkdirs();
 
-        File cameraFile = new File(cameraDataDir.getPath() + "/" +  System.currentTimeMillis() + ".jpg");
-
-        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile));
-        return i;
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        File cameraFile = new File(cameraDataDir.getPath() + "/" + System.currentTimeMillis() + ".jpg");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile));
+        return intent;
     }
 
     private static Intent createCamcorderIntent() {
