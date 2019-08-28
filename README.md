@@ -25,3 +25,11 @@ Call this function to get the height of the statusbar.
 ## Supported Platforms
 
 -   Android
+
+# Fix input[type="file"]
+
+Support use Camera for `input[type="file"]` in webbiew
+
+## Supported Platforms
+
+-   Android

@@ -17,6 +17,9 @@
 
     <platform name="android">
 
+        <hook type="after_plugin_install" src="scripts/after_install.js" />
+        <hook type="before_plugin_uninstall" src="scripts/before_uninstall.js" />
+
         <!-- StatusBarHeight -->
 
         <js-module src="www/StatusBarHeight.js" name="StatusBarHeight">
