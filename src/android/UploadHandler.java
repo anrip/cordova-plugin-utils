@@ -80,9 +80,7 @@ class UploadHandler {
     }
 
     private static Intent createCamcorderIntent() {
-        savedCaptureFileUri = new Uri[] { Uri.fromFile(createCaptureFile("mp4")) };
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, savedCaptureFileUri[0]);
         intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 15);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
         return intent;
