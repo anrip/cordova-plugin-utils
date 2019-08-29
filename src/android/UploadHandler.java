@@ -27,11 +27,10 @@ class UploadHandler {
     }
 
     public static Intent createIntent(WebChromeClient.FileChooserParams params) {
-        savedCaptureFileUri = null;
         fileChooserParams = params;
+        savedCaptureFileUri = null;
 
-        String[] acceptTypes = params.getAcceptTypes();
-        String acceptType = Arrays.toString(acceptTypes);
+        String acceptType = getAcceptTypesValue();
 
         List<Intent> intentList = new ArrayList<Intent>();
 
@@ -49,6 +48,15 @@ class UploadHandler {
 
         Intent[] intents = intentList.toArray(new Intent[intentList.size()]);
         return createChooserIntent(intents);
+    }
+
+    private static String getAcceptTypesValue() {
+        String[] acceptTypes = fileChooserParams.getAcceptTypes();
+        StringBuffer acceptTypez = new StringBuffer();
+        for (int i = 0; i < acceptTypes.length; i++) {
+            acceptTypez.append(acceptTypes[i]);
+        }
+        return acceptTypez.toString();
     }
 
     private static Intent createChooserIntent(Intent[] intents) {
@@ -72,7 +80,9 @@ class UploadHandler {
     }
 
     private static Intent createCamcorderIntent() {
+        savedCaptureFileUri = new Uri[] { Uri.fromFile(createCaptureFile("mp4")) };
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, savedCaptureFileUri[0]);
         intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 15);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
         return intent;
