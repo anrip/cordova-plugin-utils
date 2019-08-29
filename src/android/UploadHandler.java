@@ -49,8 +49,8 @@ class UploadHandler {
     }
 
     private static File createCaptureFile(String ext) {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         return new File(imagesDir.getPath() + "/" + timeStamp + "." + ext);
     }
 
