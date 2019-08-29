@@ -7,6 +7,9 @@ import android.provider.MediaStore;
 import android.webkit.WebChromeClient;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 class UploadHandler {
 
@@ -24,7 +27,7 @@ class UploadHandler {
                 return createCameraIntent();
             }
             Intent chooser = createChooserIntent(createCameraIntent());
-            chooser.putExtra(Intent.EXTRA_INTENT, createOpenableIntent("image/*"));
+            chooser.putExtra(Intent.EXTRA_INTENT, params.createIntent());
             return chooser;
         }
 
@@ -34,7 +37,7 @@ class UploadHandler {
                 return createCamcorderIntent();
             }
             Intent chooser = createChooserIntent(createCamcorderIntent());
-            chooser.putExtra(Intent.EXTRA_INTENT, createOpenableIntent("video/*"));
+            chooser.putExtra(Intent.EXTRA_INTENT, params.createIntent());
             return chooser;
         }
 
@@ -44,7 +47,7 @@ class UploadHandler {
                 return createSoundRecorderIntent();
             }
             Intent chooser = createChooserIntent(createSoundRecorderIntent());
-            chooser.putExtra(Intent.EXTRA_INTENT, createOpenableIntent("audio/*"));
+            chooser.putExtra(Intent.EXTRA_INTENT, params.createIntent());
             return chooser;
         }
 
@@ -60,22 +63,10 @@ class UploadHandler {
         return chooser;
     }
 
-    private static Intent createOpenableIntent(String type) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType(type);
-        return intent;
-    }
-
     private static Intent createCameraIntent() {
-        File externalDataDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        File cameraDataDir = new File(externalDataDir.getAbsolutePath() + "/app-photos");
-        cameraDataDir.mkdirs();
-
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        File cameraFile = new File(cameraDataDir.getPath() + "/" + System.currentTimeMillis() + ".jpg");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createImageFile()));
         return intent;
     }
 
@@ -85,6 +76,12 @@ class UploadHandler {
 
     private static Intent createSoundRecorderIntent() {
         return new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+    }
+
+    private static File createImageFile() {
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new File(storageDir.getPath() + "/" + timeStamp + ".jpg");
     }
 
 }
