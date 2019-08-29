@@ -15,6 +15,7 @@ function installUploadHandler(androidPath) {
     let editFile = path.join(androidPath, 'CordovaLib/src/org/apache/cordova/engine/SystemWebChromeClient.java');
     let editCode = fs.readFileSync(editFile).toString();
     editCode = editCode.replace('fileChooserParams.createIntent()', 'UploadHandler.createIntent(fileChooserParams)');
+    editCode = editCode.replace('WebChromeClient.FileChooserParams.parseResult(', 'UploadHandler.parseResult(');
     fs.writeFileSync(editFile, editCode);
 }
 

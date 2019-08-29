@@ -12,6 +12,7 @@ function removeUploadHandler(androidPath) {
     let editFile = path.join(androidPath, 'CordovaLib/src/org/apache/cordova/engine/SystemWebChromeClient.java');
     let editCode = fs.readFileSync(editFile).toString();
     editCode = editCode.replace('UploadHandler.createIntent(fileChooserParams)', 'fileChooserParams.createIntent()');
+    editCode = editCode.replace('UploadHandler.parseResult(', 'WebChromeClient.FileChooserParams.parseResult(');
     fs.writeFileSync(editFile, editCode);
 }
 

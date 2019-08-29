@@ -15,9 +15,19 @@ import java.util.List;
 
 class UploadHandler {
 
+    public static Uri[] savedCaptureFileUri;
+
     public static WebChromeClient.FileChooserParams fileChooserParams;
 
+    public static Uri[] parseResult(int resultCode, Intent intent) {
+        if (savedCaptureFileUri != null) {
+            return savedCaptureFileUri;
+        }
+        return fileChooserParams.parseResult(resultCode, intent);
+    }
+
     public static Intent createIntent(WebChromeClient.FileChooserParams params) {
+        savedCaptureFileUri = null;
         fileChooserParams = params;
 
         String[] acceptTypes = params.getAcceptTypes();
@@ -55,9 +65,9 @@ class UploadHandler {
     }
 
     private static Intent createCameraIntent() {
+        savedCaptureFileUri = new Uri[] { Uri.fromFile(createCaptureFile("jpg")) };
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createCaptureFile("jpg")));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, savedCaptureFileUri[0]);
         return intent;
     }
 
