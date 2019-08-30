@@ -1,6 +1,6 @@
 {
     "name": "cordova-plugin-utils",
-    "version": "1.2.8",
+    "version": "1.2.10",
     "author": {
         "name": "Anrip Wong",
         "email": "mail@anrip.com",
@@ -24,7 +24,8 @@
         "ios",
         "statusbar",
         "height",
-        "input[type=file]"
+        "input",
+        "file"
     ],
     "dependencies": {
         "shelljs": "^0.8.3"
