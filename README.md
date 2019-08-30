@@ -28,7 +28,7 @@ Call this function to get the height of the statusbar.
 
 # Fix input[type="file"]
 
-Support use Camera for `input[type="file"]` in webbiew
+Support use Camera for `input[type="file"]` in webview
 
 ## Supported Platforms
 
