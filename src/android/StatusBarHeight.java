@@ -1,14 +1,14 @@
 package com.anrip.cordova;
 
-import org.json.JSONException;
+import android.app.Activity;
+import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaArgs;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 
-import android.app.Activity;
-import android.util.Log;
+import org.json.JSONException;
 
 public class StatusBarHeight extends CordovaPlugin {
 
