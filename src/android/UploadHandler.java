@@ -9,26 +9,25 @@ import android.webkit.WebChromeClient;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 class UploadHandler {
 
-    public static Uri[] savedCaptureFileUri;
+    public static Uri savedCaptureFileUri;
 
     public static WebChromeClient.FileChooserParams fileChooserParams;
 
     public static Uri[] parseResult(int resultCode, Intent intent) {
-        if (savedCaptureFileUri != null) {
-            return savedCaptureFileUri;
+        if (intent != null && intent.getData() == null) {
+            return new Uri[] { savedCaptureFileUri };
         }
-        return fileChooserParams.parseResult(resultCode, intent);
+        return WebChromeClient.FileChooserParams.parseResult(resultCode, intent);
     }
 
     public static Intent createIntent(WebChromeClient.FileChooserParams params) {
-        fileChooserParams = params;
         savedCaptureFileUri = null;
+        fileChooserParams = params;
 
         String acceptType = getAcceptTypesValue();
 
@@ -59,6 +58,12 @@ class UploadHandler {
         return acceptTypez.toString();
     }
 
+    private static File createCaptureFile(String ext) {
+        File imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new File(imagesDir.getPath() + "/" + timeStamp + "." + ext);
+    }
+
     private static Intent createChooserIntent(Intent[] intents) {
         Intent chooser = new Intent(Intent.ACTION_CHOOSER);
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents);
@@ -66,16 +71,12 @@ class UploadHandler {
         return chooser;
     }
 
-    private static File createCaptureFile(String ext) {
-        File imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        return new File(imagesDir.getPath() + "/" + timeStamp + "." + ext);
-    }
-
     private static Intent createCameraIntent() {
-        savedCaptureFileUri = new Uri[] { Uri.fromFile(createCaptureFile("jpg")) };
+        savedCaptureFileUri = Uri.fromFile(createCaptureFile("jpg"));
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, savedCaptureFileUri[0]);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, savedCaptureFileUri);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return intent;
     }
 
