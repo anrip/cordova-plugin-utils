@@ -5,14 +5,15 @@ let fs = require('fs');
 
 let shx = require('shelljs');
 
-let selfPath = path.dirname(__dirname);
+let puglinDir = '';
+let androidDir = '';
 
-function installUploadHandler(androidPath) {
-    let copyFile = path.join(selfPath, 'src/android/UploadHandler.java');
-    let saveFile = path.join(androidPath, 'CordovaLib/src/org/apache/cordova/engine/UploadHandler.java');
+function installUploadHandler() {
+    let copyFile = path.join(puglinDir, 'src/android/UploadHandler.java');
+    let saveFile = path.join(androidDir, 'CordovaLib/src/org/apache/cordova/engine/UploadHandler.java');
     shx.cp(copyFile, saveFile);
 
-    let editFile = path.join(androidPath, 'CordovaLib/src/org/apache/cordova/engine/SystemWebChromeClient.java');
+    let editFile = path.join(androidDir, 'CordovaLib/src/org/apache/cordova/engine/SystemWebChromeClient.java');
     let editCode = fs.readFileSync(editFile).toString();
     editCode = editCode.replace('fileChooserParams.createIntent()', 'UploadHandler.createIntent(fileChooserParams)');
     editCode = editCode.replace('WebChromeClient.FileChooserParams.parseResult(', 'UploadHandler.parseResult(');
@@ -20,10 +21,10 @@ function installUploadHandler(androidPath) {
 }
 
 module.exports = function (context) {
-    let projectRoot = context.opts.projectRoot;
+    puglinDir = context.opts.plugin.dir;
+    androidDir = path.join(context.opts.projectRoot, 'platforms', 'android');
 
-    let androidPath = path.join(projectRoot, 'platforms', 'android');
-    if (fs.existsSync(androidPath) && context.opts.plugin.platform == 'android') {
-        installUploadHandler(androidPath);
+    if (fs.existsSync(androidDir) && context.opts.plugin.platform == 'android') {
+        installUploadHandler();
     }
 };
