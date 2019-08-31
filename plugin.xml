@@ -5,7 +5,7 @@
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <name>CordovaUtils</name>
+    <name>Cordova Utils</name>
     <description>Cordova Extra Utils</description>
     <keywords>cordova,utils,statusbar,height,input,file</keywords>
 
