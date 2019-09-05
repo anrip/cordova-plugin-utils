@@ -4,19 +4,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.webkit.WebChromeClient;
+import android.webkit.WebChromeClient.FileChooserParams;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 class UploadHandler {
 
     public static File createdCaptureFile;
 
-    public static WebChromeClient.FileChooserParams fileChooserParams;
+    public static FileChooserParams fileChooserParams;
 
     public static Uri[] parseResult(int resultCode, Intent intent) {
         if (createdCaptureFile != null && createdCaptureFile.exists()) {
@@ -25,10 +24,20 @@ class UploadHandler {
             return new Uri[] { uri };
         }
         createdCaptureFile = null;
+
+        if (intent.getClipData() != null && intent.getClipData().getItemCount() > 1) {
+            int itemCount = intent.getClipData().getItemCount();
+            Uri[] result = new Uri[itemCount];
+            for (int i = 0; i < itemCount; i++) {
+                result[i] = intent.getClipData().getItemAt(i).getUri();
+            }
+            return result;
+        }
+
         return fileChooserParams.parseResult(resultCode, intent);
     }
 
-    public static Intent createIntent(WebChromeClient.FileChooserParams params) {
+    public static Intent createIntent(FileChooserParams params) {
         fileChooserParams = params;
 
         if (createdCaptureFile != null) {
@@ -37,7 +46,7 @@ class UploadHandler {
 
         String acceptType = getAcceptTypesValue();
 
-        List<Intent> intentList = new ArrayList<Intent>();
+        ArrayList<Intent> intentList = new ArrayList<Intent>();
 
         if (acceptType.isEmpty() || acceptType.contains("image/")) {
             intentList.add(createCameraIntent());
@@ -71,10 +80,14 @@ class UploadHandler {
     }
 
     private static Intent createChooserIntent(Intent[] intents) {
-        Intent chooser = new Intent(Intent.ACTION_CHOOSER);
-        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents);
-        chooser.putExtra(Intent.EXTRA_INTENT, fileChooserParams.createIntent());
-        return chooser;
+        Intent fileChooser = fileChooserParams.createIntent();
+        if (fileChooserParams.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE) {
+            fileChooser.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        }
+        Intent actionChooser = new Intent(Intent.ACTION_CHOOSER);
+        actionChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents);
+        actionChooser.putExtra(Intent.EXTRA_INTENT, fileChooser);
+        return actionChooser;
     }
 
     private static Intent createCameraIntent() {
