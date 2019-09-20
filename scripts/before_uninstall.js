@@ -14,7 +14,7 @@ function removeMyWebChromeClient() {
     let editFile = path.join(androidDir, 'CordovaLib/src/org/apache/cordova/engine/SystemWebView.java');
     let editCode = fs.readFileSync(editFile).toString();
 
-    editCode = editCode.replace('MyWebChromeClient', 'SystemWebChromeClient');
+    editCode = editCode.replace(/MyWebChromeClient/g, 'SystemWebChromeClient');
     fs.writeFileSync(editFile, editCode);
 }
 

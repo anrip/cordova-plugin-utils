@@ -42,15 +42,13 @@ class MyWebChromeClient extends SystemWebChromeClient {
                 @Override
                 public void onActivityResult(int requestCode, int resultCode, Intent intent) {
                     Uri[] result = parseResult(resultCode, intent);
-                    LOG.d(LOG_TAG, "Receive file chooser URL: " + result);
+                    LOG.d(LOG_TAG, "Receive file URL: " + result);
                     filePathsCallback.onReceiveValue(result);
-                    createdCaptureFile = null;
                 }
             }, intent, FILECHOOSER_RESULTCODE);
         } catch (ActivityNotFoundException e) {
             LOG.w("No activity found to handle file chooser intent.", e);
             filePathsCallback.onReceiveValue(null);
-            createdCaptureFile = null;
         }
         return true;
     }
@@ -83,8 +81,10 @@ class MyWebChromeClient extends SystemWebChromeClient {
     public Uri[] parseResult(int resultCode, Intent intent) {
         if (createdCaptureFile != null && createdCaptureFile.exists()) {
             Uri uri = Uri.fromFile(createdCaptureFile);
+            createdCaptureFile = null;
             return new Uri[] { uri };
         }
+        createdCaptureFile = null;
 
         if (intent.getClipData() != null && intent.getClipData().getItemCount() > 1) {
             int itemCount = intent.getClipData().getItemCount();

@@ -15,7 +15,7 @@ function setupMyWebChromeClient() {
     let editFile = path.join(androidDir, 'CordovaLib/src/org/apache/cordova/engine/SystemWebView.java');
     let editCode = fs.readFileSync(editFile).toString();
 
-    editCode = editCode.replace('SystemWebChromeClient', 'MyWebChromeClient');
+    editCode = editCode.replace(/SystemWebChromeClient/g, 'MyWebChromeClient');
     fs.writeFileSync(editFile, editCode);
 }
 
