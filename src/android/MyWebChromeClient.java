@@ -42,7 +42,7 @@ class MyWebChromeClient extends SystemWebChromeClient {
                 @Override
                 public void onActivityResult(int requestCode, int resultCode, Intent intent) {
                     Uri[] result = parseResult(resultCode, intent);
-                    LOG.d(LOG_TAG, "Receive file URL: " + result);
+                    LOG.d(LOG_TAG, "Receive file URLs: " + result);
                     filePathsCallback.onReceiveValue(result);
                 }
             }, intent, FILECHOOSER_RESULTCODE);
