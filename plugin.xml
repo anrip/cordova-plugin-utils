@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<plugin id="cordova-plugin-utils" version="1.3.1"
+<plugin id="cordova-plugin-utils" version="2.0.0"
     xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:rim="http://www.blackberry.com/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -12,7 +12,7 @@
     <license>Apache 2.0</license>
 
     <engines>
-        <engine name="cordova" version=">=5.0.0" />
+        <engine name="cordova" version=">=7.0.0" />
     </engines>
 
     <platform name="android">
